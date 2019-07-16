@@ -6,10 +6,19 @@ class Board
   def initialize
     @cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     welcome_note
-    create_board
+    display
   end
-    private 
-  def create_board
+  private
+  def welcome_note
+    puts "Welcome to the tic-tac-toe game! .
+  1. The game is played on a grid that's 3 squares by 3 squares.
+  2. You are X or O, your friend is O or X. Players take turns putting their marks in empty squares.
+  3. The first player to get 3 in a row (up, down, across, or diagonally) is the winner.
+  4. When all 9 squares are full, the game is over. If no player has 3."
+  end
+
+  public
+  def display
     puts '---+---+---'
     @cells.each do |i|
       line = ''
@@ -22,42 +31,61 @@ class Board
     end
   end
 
-  def welcome_note
-    puts"Welcome to the tic-tac-toe game! .
-  1. The game is played on a grid that's 3 squares by 3 squares.
-  2. You are X or O, your friend is O or X. Players take turns putting their marks in empty squares.
-  3. The first player to get 3 in a row (up, down, across, or diagonally) is the winner.
-  4. When all 9 squares are full, the game is over. If no player has 3."
+
+  def game_over?
+    false
   end
+
+  def update(pos, side)
+    p side
+    parent_pos = (pos.to_f / 3).ceil - 1
+    p parent_pos
+    parent_arr = @cells[parent_pos]
+    p parent_arr
+    index = parent_arr.index(pos)
+    parent_arr[index] = side
+  end
+
 end
 
 class Player
   attr_accessor :name, :side
   def initialize(player_no)
-  @player_no = player_no
+    @player_no = player_no
   end
 
-  def get_name
-  puts "Player #{@player_no}: what's your name? "
-  @name = gets.chomp
+  def set_name
+    puts "Player #{@player_no}: what's your name? "
+    @name = gets.chomp
   end
-
-
 end
 
-board = Board.new 
 
-player_1 = Player.new(1)
-player_2 = Player.new(2)
-player_1.get_name
-player_2.get_name
+board = Board.new
 
-def player_1.set_side
+player1 = Player.new(1)
+player2 = Player.new(2)
+player1.set_name
+player2.set_name
+
+def player1.set_side
   puts "#{@name} what's your side? Choose between X and O"
-  @side = gets.chomp
+  side = gets.chomp
+  @side = side.upcase
 end
-player_1.set_side
-player_2.side = player_1.side == "X" ? "O" : "X"
 
+player1.set_side
+player2.side = player1.side == 'X' ? 'O' : 'X'
 
+until board.game_over?
+  board.display
+  puts "#{player1.name}, tell me a position"
+  pos = gets.chomp
+  board.update(pos.to_i, player1.side)
+  board.display
+  puts "#{player2.name}, tell me a position"
+  pos = gets.chomp
+  board.update(pos.to_i, player2.side)
+  board.display    
+end
 
