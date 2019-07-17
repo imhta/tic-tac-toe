@@ -1,3 +1,4 @@
+require "colorize"
 # frozen_string_literal: true
 
 # added a method to enumerable
@@ -21,11 +22,11 @@ end
 # class for error messages
 module Error
   def self.not_available
-    puts 'Position not available, please try again with another position'
+    puts 'Position not available, please try again with another position'.red
   end
 
   def self.not_valid_side
-    puts 'This is not a valid side, please choose between X and O'
+    puts 'This is not a valid side, please choose between X and O'.red
   end
 end
 
@@ -37,15 +38,15 @@ module GameMessages
   2. You are X or O, your friend is O or X.
   3. Players take turns putting their marks in empty squares.
   4. The first player to get 3 in a row wins.
-  5. When all 9 squares are full, the game is over. If no player has 3."
+  5. When all 9 squares are full, the game is over. If no player has 3.".green
   end
 
   def self.celebrate_winner(name)
-    puts "Game over, winner is #{name}"
+    puts "Game over, winner is #{name}".green 
   end
 
   def self.draw
-    puts 'It is draw wanna try again?'
+    puts 'It is draw wanna try again?'.green 
   end
 
   def self.ask_player_name(player_no)
@@ -115,7 +116,12 @@ class Board
     parent_pos = (pos.to_f / 3).ceil - 1
     parent_arr = @cells[parent_pos]
     child_pos = parent_arr.index(pos)
-    parent_arr[child_pos] = side
+    if @moves % 2 == 0 
+      parent_arr[child_pos] = side.blue
+    else
+      parent_arr[child_pos] = side.yellow
+    end 
+
     @moves -= 1
     game_over?(parent_pos, child_pos, side, pos, name) if @moves <= 5
   end

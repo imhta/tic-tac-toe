@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative './../lib/game_module'
-
+require "colorize"
 game_count = 0
 
 def game
@@ -41,8 +41,8 @@ def game
     board.display
 
     until valid_move
-      GameMessages.ask_position(player1.name) if turn == 1
-      GameMessages.ask_position(player2.name) if turn == 2
+      GameMessages.ask_position(player1.name.yellow) if turn == 1
+      GameMessages.ask_position(player2.name.blue) if turn == 2
       pos = gets.chomp
       child_pos = (pos.to_f / 3).ceil - 1
       if (1..9).include?(pos.to_i) && board.cells[child_pos].include?(pos.to_i)
