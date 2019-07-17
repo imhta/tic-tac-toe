@@ -39,21 +39,29 @@ class Board
   end
 
   def update(pos, side)
-    p side
     parent_pos = (pos.to_f / 3).ceil - 1
-    p parent_pos
     parent_arr = @cells[parent_pos]
-    p parent_arr
     index = parent_arr.index(pos)
+    cur_val =  parent_arr[index]
     parent_arr[index] = side
     @moves -= 1
-    if @cells[parent_pos].uniq.length == 1
-          puts "Game over, winner is #{side}"
-    
-    elsif @cells.all?{ |child| child[index] == side}
-        puts "Game over, winner is #{side}"
-    end
 
+    if (@cells[parent_pos].uniq.length == 1) || (@cells.all?{ |child| child[index] == side})
+          puts "Game over, winner is #{side}"
+    end
+    if(cur_val % 2)
+      i = 0
+      dia_left = @cells.all? do |child|
+        child[i] == side
+        i+=1
+      end
+      j = 2
+      dia_right = @cells.all? do |child|
+        child[j] == side
+        j-=1
+      end
+      puts "Game over, winner is  #{side}" if dia_left || dia_right
+    end
   end
 
 end 
