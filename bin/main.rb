@@ -2,12 +2,10 @@
 
 require_relative './../lib/game_module'
 
-
 game_count = 0
 
-def start_game
-
-    board = Board.new
+def game
+  board = Board.new
 
   player1 = Player.new(1)
   player2 = Player.new(2)
@@ -15,10 +13,10 @@ def start_game
   player2.set_name
 
   def player1.set_side
-    puts "#{@name} what's your side? Choose between X and O"
+    GameMessages.ask_player1_side(@name)
     side = gets.chomp
     @side = side.upcase
-    puts "Great! #{@name}, your side is #{@side}"
+    GameMessages.side_selected(@name, @side)
   end
 
   valid_side = false
@@ -43,7 +41,8 @@ def start_game
     board.display
 
     until valid_move
-      puts "#{turn == 1 ? player1.name : player2.name}, choose me a position"
+      GameMessages.ask_position(player1.name) if turn == 1
+      GameMessages.ask_position(player2.name) if turn == 2
       pos = gets.chomp
       child_pos = (pos.to_f / 3).ceil - 1
       if (1..9).include?(pos.to_i) && board.cells[child_pos].include?(pos.to_i)
@@ -51,33 +50,33 @@ def start_game
       else
         Error.not_available
       end
+    end
 
-  end
-
-    board.update(pos.to_i, turn == 1 ? player1.side : player2.side)
+    board.update(
+      pos.to_i,
+      turn == 1 ? player1.side : player2.side,
+      turn == 1 ? player1.name : player2.name
+    )
 
     # update
     turn = turn == 1 ? 2 : 1
 
   end
-
+  GameMessages.draw if board.moves.zero? && board.has_no_winner
 end
 
-
-while true
-
-if game_count == 0
-    start_game
-    game_count+= 1
-else
-    puts "what to play another game? Y or N"
+loop do
+  if game_count.zero?
+    game
+    game_count += 1
+  else
+    GameMessages.want_to_play
     res = gets.chomp
-    if (res.upcase == "Y" || res.upcase == "YES")
-        start_game
+    if res.upcase == 'Y' || res.upcase == 'YES'
+      game
     else
-        puts "Thank you for playing!, see you :)"
-        exit!
+      GameMessages.thank
+      exit!
     end
-end
-
+  end
 end
