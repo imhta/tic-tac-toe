@@ -17,15 +17,28 @@ module Enumerable
   end
 end
 
+module Error
+
+def self.not_available 
+  puts "Position not available, please try again with another position"
+end
+
+def self.not_valid_side
+puts "This is not a valid side, please choose between X and O"
+end
+
+end
+
 #  board class create new board when init
 
 class Board
-  attr_reader :moves
+  attr_reader :moves, :cells, :has_no_winner
   def initialize
     @cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     welcome_note
     display
     @moves = 9
+    @has_no_winner = true
   end
 
   private
@@ -56,9 +69,14 @@ class Board
   def game_over?(parent_pos, child_pos, side, pos)
     if (@cells[parent_pos].uniq.length == 1) || (@cells.all? { |child| child[child_pos] == side })
       puts "Game over, winner is #{side}"
+      @has_no_winner = false
+
     end
     if (pos % 2 == 1)
-      puts "Game over, winner is #{side} by dia" if @cells.check_diagonal? side
+      if @cells.check_diagonal? side
+    puts "Game over, winner is #{side} by dia " 
+      @has_no_winner = false
+      end
     end
   end
 
@@ -70,7 +88,9 @@ class Board
     @moves -= 1
     game_over?(parent_pos, child_pos, side, pos) if @moves <= 5
   end
-end
+
+
+end #end of board class
 
 class Player
   attr_accessor :name, :side
@@ -82,7 +102,7 @@ class Player
     puts "Player #{@player_no}: what's your name? "
     @name = gets.chomp
   end
-end
+end #end of player class
 
 board = Board.new
 
@@ -91,25 +111,61 @@ player2 = Player.new(2)
 player1.set_name
 player2.set_name
 
+
+
 def player1.set_side
   puts "#{@name} what's your side? Choose between X and O"
   side = gets.chomp
   @side = side.upcase
+  puts "Great! #{@name}, your side is #{@side}"
 end
 
-player1.set_side
+  valid_side = false 
+
+until valid_side  
+
+  player1.set_side
+    
+  if player1.side == "X" || player1.side == "O"
+    valid_side = true 
+  else 
+    Error::not_valid_side
+  end
+end
+
 player2.side = player1.side == 'X' ? 'O' : 'X'
 
-while board.moves
+turn = 1 
+
+while board.moves && board.has_no_winner
+  valid_move = false
   board.display
 
-  puts "#{player1.name}, tell me a position"
-  pos = gets.chomp
-  board.update(pos.to_i, player1.side)
+  until valid_move 
+    puts "#{turn == 1? player1.name : player2.name}, choose me a position"
+    pos = gets.chomp
+    child_pos = (pos.to_f / 3).ceil - 1
+    if (1..9).include?(pos.to_i) && board.cells[child_pos].include?(pos.to_i)
+      valid_move = true
+    else 
+     Error::not_available
+    end
+    
+end 
 
-  board.display
 
-  puts "#{player2.name}, tell me a position"
-  pos = gets.chomp
-  board.update(pos.to_i, player2.side)
+board.update(pos.to_i, turn == 1 ? player1.side: player2.side)
+  
+
+
+#update 
+turn = turn == 1 ?  2 : 1
+
+
+
+  # puts "#{player2.name}, choose a position"
+  # pos = gets.chomp
+  # board.update(pos.to_i, player2.side)
+
+
 end
