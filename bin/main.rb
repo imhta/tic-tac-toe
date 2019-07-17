@@ -35,10 +35,10 @@ def game
   player2.side = player1.side == 'X' ? 'O' : 'X'
 
   turn = 1
-
-  while board.moves && board.has_no_winner
+  board.display
+  while !board.moves.zero? && board.has_no_winner
     valid_move = false
-    board.display
+
 
     until valid_move
       GameMessages.ask_position(player1.name.yellow) if turn == 1
@@ -60,8 +60,9 @@ def game
 
     # update
     turn = turn == 1 ? 2 : 1
-
+    board.display
   end
+
   GameMessages.draw if board.moves.zero? && board.has_no_winner
 end
 

@@ -116,12 +116,7 @@ class Board
     parent_pos = (pos.to_f / 3).ceil - 1
     parent_arr = @cells[parent_pos]
     child_pos = parent_arr.index(pos)
-    if @moves % 2 == 0 
-      parent_arr[child_pos] = side.blue
-    else
-      parent_arr[child_pos] = side.yellow
-    end 
-
+    parent_arr[child_pos] = side
     @moves -= 1
     game_over?(parent_pos, child_pos, side, pos, name) if @moves <= 5
   end
