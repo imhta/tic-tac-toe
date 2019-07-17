@@ -3,10 +3,12 @@
 #  board class create new board when init
 #
 class Board
+  attr_reader :moves 
   def initialize
     @cells = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     welcome_note
     display
+    @moves = 9
   end
   private
   def welcome_note
@@ -44,9 +46,17 @@ class Board
     p parent_arr
     index = parent_arr.index(pos)
     parent_arr[index] = side
+    @moves -= 1
+    if @cells[parent_pos].uniq.length == 1
+          puts "Game over, winner is #{side}"
+    
+    elsif @cells.all?{ |child| child[index] == side}
+        puts "Game over, winner is #{side}"
+    end
+
   end
 
-end
+end 
 
 class Player
   attr_accessor :name, :side
