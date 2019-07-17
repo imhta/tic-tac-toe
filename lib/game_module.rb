@@ -1,4 +1,4 @@
-require "colorize"
+require 'colorize'
 # frozen_string_literal: true
 
 # added a method to enumerable
@@ -42,11 +42,11 @@ module GameMessages
   end
 
   def self.celebrate_winner(name)
-    puts "Game over, winner is #{name}".green 
+    puts "Game over, winner is #{name}".green
   end
 
   def self.draw
-    puts 'It is draw wanna try again?'.green 
+    puts 'It is draw wanna try again?'.green
   end
 
   def self.ask_player_name(player_no)

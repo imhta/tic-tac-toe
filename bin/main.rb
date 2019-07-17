@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative './../lib/game_module'
-require "colorize"
+require 'colorize'
 game_count = 0
 
 def game
@@ -38,7 +38,6 @@ def game
   board.display
   while !board.moves.zero? && board.has_no_winner
     valid_move = false
-
 
     until valid_move
       GameMessages.ask_position(player1.name.yellow) if turn == 1
