@@ -38,7 +38,7 @@ def game
   player2.side = player1.side == 'X' ? 'O' : 'X'
 
   turn = 1
-  board.display
+  Display.show_board board.cells
   while !board.moves.zero? && board.has_no_winner
     valid_move = false
 
@@ -62,7 +62,7 @@ def game
 
     # update
     turn = turn == 1 ? 2 : 1
-    board.display
+    Display.show_board board.cells
   end
 
   Display.draw if board.moves.zero? && board.has_no_winner
