@@ -7,7 +7,7 @@ require_relative './display.module.rb'
 
 # added a method to enumerable
 module Enumerable
-  def check_vertical?(side)
+  def check_vertical?(side, child_pos)
     all? { |child| child[child_pos] == side }
   end
 
@@ -46,9 +46,9 @@ class Board
 
   private
 
-  def game_over?(parent_pos, _child_pos, side, name)
+  def game_over?(parent_pos, child_pos, side, name)
     if @cells[parent_pos].check_horizontal? ||
-       @cells.check_vertical?(side) ||
+       @cells.check_vertical?(side, child_pos) ||
        @cells.check_diagonal?(side)
 
       Display.celebrate_winner name
