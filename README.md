@@ -7,7 +7,9 @@ Ruby CLI implementation of tic tac toe game
 #### Requirement
 * Ruby 2.5.0+
 #### Run
-```ruby bin/main.rb```
+```
+ruby bin/main.rb
+```
 
 ## Live version
 Repl.it: [Preview](https://repl.it/@ponmuthuselvam/tic-tac-toe)
