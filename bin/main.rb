@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
-require_relative './../lib/game_module'
+require_relative './../lib/board.rb'
+require_relative './../lib/player.rb'
+require_relative './../lib/error.module.rb'
+require_relative './../lib/display.module.rb'
 require 'colorize'
 game_count = 0
 
@@ -13,10 +16,10 @@ def game
   player2.set_name
 
   def player1.set_side
-    GameMessages.ask_player1_side(@name)
+    Display.ask_player1_side(@name)
     side = gets.chomp
     @side = side.upcase
-    GameMessages.side_selected(@name, @side)
+    Display.side_selected(@name, @side)
   end
 
   valid_side = false
@@ -40,8 +43,8 @@ def game
     valid_move = false
 
     until valid_move
-      GameMessages.ask_position(player1.name.yellow) if turn == 1
-      GameMessages.ask_position(player2.name.blue) if turn == 2
+      Display.ask_position(player1.name.yellow) if turn == 1
+      Display.ask_position(player2.name.blue) if turn == 2
       pos = gets.chomp
       child_pos = (pos.to_f / 3).ceil - 1
       if (1..9).include?(pos.to_i) && board.cells[child_pos].include?(pos.to_i)
@@ -62,7 +65,7 @@ def game
     board.display
   end
 
-  GameMessages.draw if board.moves.zero? && board.has_no_winner
+  Display.draw if board.moves.zero? && board.has_no_winner
 end
 
 loop do
@@ -70,12 +73,12 @@ loop do
     game
     game_count += 1
   else
-    GameMessages.want_to_play
+    Display.want_to_play
     res = gets.chomp
     if res.upcase == 'Y' || res.upcase == 'YES'
       game
     else
-      GameMessages.thank
+      Display.thank
       exit!
     end
   end
