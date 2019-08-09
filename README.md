@@ -16,4 +16,4 @@ Repl.it: [Preview](https://repl.it/@ponmuthuselvam/tic-tac-toe)
 
 ## Author
 * [@MouhaDiouf](https://github.com/MouhaDiouf)
-* [@imhtapm](https://github.com/imhtapm)
+* [@imhta](https://github.com/imhta)
